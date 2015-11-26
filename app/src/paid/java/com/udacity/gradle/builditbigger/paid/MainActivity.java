@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.udacity.gradle.builditbigger.IJokeFetchListener;
 import com.udacity.gradle.builditbigger.JokeFetchAsync;
@@ -16,6 +17,9 @@ import com.udacity.gradle.builditbigger.jokesbackend.myApi.MyApi;
 public class MainActivity extends ActionBarActivity implements IJokeFetchListener {
 
     private static MyApi mMyApiService = null;
+
+    // Spinner.
+    ProgressBar mSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,12 @@ public class MainActivity extends ActionBarActivity implements IJokeFetchListene
     }
 
     public void tellJoke(View view){
+        // Show the spinner.
+        mSpinner = (ProgressBar) findViewById(R.id.spinner);
+        if(mSpinner != null) {
+            mSpinner.setVisibility(View.VISIBLE);
+        }
+
         // Start the async fetch of joke from gce server.
         new JokeFetchAsync(this, getString(R.string.backend_project_id)).fetchJoke();
     }
@@ -56,5 +66,10 @@ public class MainActivity extends ActionBarActivity implements IJokeFetchListene
         Intent intent = new Intent(MainActivity.this, DisplayJokes.class);
         intent.putExtra(DisplayJokes.JOKE_EXTRA, joke);
         startActivity(intent);
+
+        // Hide the spinner.
+        if(mSpinner != null) {
+            mSpinner.setVisibility(View.GONE);
+        }
     }
 }

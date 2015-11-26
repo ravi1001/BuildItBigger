@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -19,8 +20,12 @@ import com.udacity.gradle.builditbigger.jokesbackend.myApi.MyApi;
 public class MainActivity extends ActionBarActivity implements IJokeFetchListener {
 
     private static MyApi mMyApiService = null;
+
     // Interstitial ad object.
     private InterstitialAd mInterstitialAd;
+
+    // Spinner.
+    ProgressBar mSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +72,12 @@ public class MainActivity extends ActionBarActivity implements IJokeFetchListene
     }
 
     public void tellJoke(View view){
+        // Show the spinner.
+        mSpinner = (ProgressBar) findViewById(R.id.spinner);
+        if(mSpinner != null) {
+            mSpinner.setVisibility(View.VISIBLE);
+        }
+
         // Display the interstitial ad if it's loaded.
         if(mInterstitialAd != null && mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
@@ -82,6 +93,11 @@ public class MainActivity extends ActionBarActivity implements IJokeFetchListene
         Intent intent = new Intent(MainActivity.this, DisplayJokes.class);
         intent.putExtra(DisplayJokes.JOKE_EXTRA, joke);
         startActivity(intent);
+
+        // Hide the spinner.
+        if(mSpinner != null) {
+            mSpinner.setVisibility(View.GONE);
+        }
     }
 
     // Requests a new interstitial ad.
