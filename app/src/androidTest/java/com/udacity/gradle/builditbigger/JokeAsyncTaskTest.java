@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class JokeAsyncTaskTest extends AndroidTestCase implements IJokeFetchListener {
     // Specify a valid project id for the gce server.
-    private final String PROJECT_ID = "project-id";
+    private final String PROJECT_ID = "id";
     JokeFetchAsync mJokeFetchAsync;
     CountDownLatch mCountDownLatch;
     String mJoke;

@@ -1,4 +1,4 @@
-package com.udacity.gradle.builditbigger;
+package com.udacity.gradle.builditbigger.free;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.udacity.gradle.builditbigger.IJokeFetchListener;
+import com.udacity.gradle.builditbigger.JokeFetchAsync;
+import com.udacity.gradle.builditbigger.R;
 import com.udacity.gradle.builditbigger.displayjokes.DisplayJokes;
 import com.udacity.gradle.builditbigger.jokesbackend.myApi.MyApi;
 
@@ -49,6 +52,7 @@ public class MainActivity extends ActionBarActivity implements IJokeFetchListene
 
     @Override
     public void jokeFetchCompleted(String joke) {
+        // Launch the joke displaying activity in the android library.
         Intent intent = new Intent(MainActivity.this, DisplayJokes.class);
         intent.putExtra(DisplayJokes.JOKE_EXTRA, joke);
         startActivity(intent);

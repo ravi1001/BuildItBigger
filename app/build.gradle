@@ -17,13 +17,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+        free {
+            applicationId "com.udacity.gradle.builditbigger.free"
+        }
+        paid {
+            applicationId "com.udacity.gradle.builditbigger.paid"
+        }
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    // Added for AdMob.
-    compile 'com.google.android.gms:play-services-ads:8.3.0'
-//    compile 'com.google.android.gms:play-services:8.1.0'
+    // Added for AdMob only for the free flavor.
+    freeCompile 'com.google.android.gms:play-services-ads:8.3.0'
     compile 'com.android.support:appcompat-v7:23.1.0'
     // Added for the gce module serving jokes.
     compile project(path: ':jokesbackend', configuration: 'android-endpoints')
