@@ -7,6 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.udacity.gradle.builditbigger.IJokeFetchListener;
 import com.udacity.gradle.builditbigger.JokeFetchAsync;
 import com.udacity.gradle.builditbigger.R;
@@ -16,11 +19,29 @@ import com.udacity.gradle.builditbigger.jokesbackend.myApi.MyApi;
 public class MainActivity extends ActionBarActivity implements IJokeFetchListener {
 
     private static MyApi mMyApiService = null;
+    // Interstitial ad object.
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Create the interstitial ad and set the ad unit id.
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
+
+        // Set the interstitial ad listener.
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                // Start loading the ad again.
+                requestNewInterstitial();
+            }
+        });
+
+        // Start loading the ad asynchronously.
+        requestNewInterstitial();
     }
 
     @Override
@@ -46,6 +67,11 @@ public class MainActivity extends ActionBarActivity implements IJokeFetchListene
     }
 
     public void tellJoke(View view){
+        // Display the interstitial ad if it's loaded.
+        if(mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        }
+
         // Start the async fetch of joke from gce server.
         new JokeFetchAsync(this, getString(R.string.backend_project_id)).fetchJoke();
     }
@@ -56,5 +82,19 @@ public class MainActivity extends ActionBarActivity implements IJokeFetchListene
         Intent intent = new Intent(MainActivity.this, DisplayJokes.class);
         intent.putExtra(DisplayJokes.JOKE_EXTRA, joke);
         startActivity(intent);
+    }
+
+    // Requests a new interstitial ad.
+    private void requestNewInterstitial() {
+        // Check if the ad is not being loaded or already loaded, only then request for new ad.
+        if(mInterstitialAd != null && !mInterstitialAd.isLoading() && !mInterstitialAd.isLoaded()) {
+            // Get an ad request object.
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice(getString(R.string.test_device_id))
+                    .build();
+
+            // Request for new ad.
+            mInterstitialAd.loadAd(adRequest);
+        }
     }
 }
