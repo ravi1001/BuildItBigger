@@ -17,3 +17,31 @@ allprojects {
         jcenter()
     }
 }
+
+task runAppEngine (dependsOn: ":jokesbackend:appengineRun") {
+    project(":jokesbackend").afterEvaluate { backend ->
+        backend.extensions.appengine.daemon = true
+    }
+    doLast {
+        println "Started the jokes server"
+    }
+}
+
+runAppEngine.finalizedBy ":runAndroidTest"
+
+task runAndroidTest(dependsOn: ":app:connectedAndroidTest") {
+    doLast {
+        println "Finished android tests"
+    }
+}
+
+runAndroidTest.finalizedBy ":stopAppEngine"
+
+task stopAppEngine(dependsOn: ":jokesbackend:appengineStop") {
+    doLast {
+        println "Stopped the jokes server"
+    }
+}
+
+
+
