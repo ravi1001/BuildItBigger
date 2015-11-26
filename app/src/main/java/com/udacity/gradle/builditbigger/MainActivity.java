@@ -11,8 +11,6 @@ import android.view.View;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
-import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udacity.gradle.builditbigger.displayjokes.DisplayJokes;
 import com.udacity.gradle.builditbigger.jokesbackend.myApi.MyApi;
 
@@ -68,17 +66,14 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected String doInBackground(Void... params) {
             if(mMyApiService == null) {  // Only do this once
-                MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
-                        new AndroidJsonFactory(), null)
-                        // options for running against local devappserver
-                        // - 10.0.2.2 is localhost's IP address in Android emulator
-                        .setRootUrl("http://10.0.2.2:8080/_ah/api/")
-                        .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                            @Override
-                            public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                                abstractGoogleClientRequest.setDisableGZipContent(true);
-                            }
-                        });
+                // Get the project id for the backend from string resources.
+                final String projectId = getString(R.string.backend_project_id);
+
+                // Compose the root url.
+                final String rootUrl = "https://" + projectId + ".appspot.com/_ah/api/";
+
+                MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
+                        .setRootUrl(rootUrl);
 
                 mMyApiService = builder.build();
             }

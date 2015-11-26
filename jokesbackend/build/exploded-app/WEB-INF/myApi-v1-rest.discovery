@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/U9mv3SD4fE95VSfmtAm4GDuaLJM\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/efbfDhvbToHDnV22b_pCBKAM5ME\"",
  "discoveryVersion": "v1",
  "id": "myApi:v1",
  "name": "myApi",
@@ -13,9 +13,9 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://myApplicationId.appspot.com/_ah/api/myApi/v1/",
+ "baseUrl": "https://builditbigger-1141.appspot.com/_ah/api/myApi/v1/",
  "basePath": "/_ah/api/myApi/v1/",
- "rootUrl": "https://myApplicationId.appspot.com/_ah/api/",
+ "rootUrl": "https://builditbigger-1141.appspot.com/_ah/api/",
  "servicePath": "myApi/v1/",
  "batchPath": "batch",
  "parameters": {

@@ -1,3 +1,12 @@
+IMPORTANT INSTRUCTION
+---------------------
+
+Please ensure that you add the project id for the backend server 
+fetching jokes in these two files:
+1. app/main/src/res/values/strings.xml
+2. jokesbackend/src/main/webapp/WEB-INF/appengine-web.xml
+
+
 # Gradle for Android and Java Final Project
 
 In this project, you will create an app with multiple flavors that uses
