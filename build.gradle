@@ -19,9 +19,14 @@ allprojects {
 }
 
 task runAppEngine (dependsOn: ":jokesbackend:appengineRun") {
-    project(":jokesbackend").afterEvaluate { backend ->
-        backend.extensions.appengine.daemon = true
+    evaluationDependsOn ":jokesbackend"
+
+    project(":jokesbackend"){
+        appengine{
+            daemon true
+        }
     }
+
     doLast {
         println "Started the jokes server"
     }
