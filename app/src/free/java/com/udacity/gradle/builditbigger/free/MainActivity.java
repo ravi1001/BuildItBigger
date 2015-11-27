@@ -40,12 +40,18 @@ public class MainActivity extends ActionBarActivity implements IJokeFetchListene
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
+                // Start the async fetch of joke from gce server.
+                new JokeFetchAsync(MainActivity.this, getString(R.string.backend_project_id)).fetchJoke();
+
+                // Show the spinner.
+                showSpinner();
+
                 // Start loading the ad again.
                 requestNewInterstitial();
             }
         });
 
-        // Start loading the ad asynchronously.
+        // Request new interstitial ad to be loaded and kept ready.
         requestNewInterstitial();
     }
 
@@ -71,20 +77,27 @@ public class MainActivity extends ActionBarActivity implements IJokeFetchListene
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Handles the tell joke button click event.
+     */
     public void tellJoke(View view){
         // Show the spinner.
-        mSpinner = (ProgressBar) findViewById(R.id.spinner);
-        if(mSpinner != null) {
-            mSpinner.setVisibility(View.VISIBLE);
-        }
+        showSpinner();
 
         // Display the interstitial ad if it's loaded.
         if(mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+            // Show ad.
             mInterstitialAd.show();
-        }
 
-        // Start the async fetch of joke from gce server.
-        new JokeFetchAsync(this, getString(R.string.backend_project_id)).fetchJoke();
+            // Hide the spinner.
+            hideSpinner();
+        } else {    // Interstitial ad is not loaded yet.
+            // Start the async fetch of joke from gce server.
+            new JokeFetchAsync(this, getString(R.string.backend_project_id)).fetchJoke();
+
+            // Request new interstitial ad to be loaded and kept ready.
+            requestNewInterstitial();
+        }
     }
 
     @Override
@@ -95,9 +108,7 @@ public class MainActivity extends ActionBarActivity implements IJokeFetchListene
         startActivity(intent);
 
         // Hide the spinner.
-        if(mSpinner != null) {
-            mSpinner.setVisibility(View.GONE);
-        }
+        hideSpinner();
     }
 
     // Requests a new interstitial ad.
@@ -111,6 +122,21 @@ public class MainActivity extends ActionBarActivity implements IJokeFetchListene
 
             // Request for new ad.
             mInterstitialAd.loadAd(adRequest);
+        }
+    }
+
+    // Shows the spinner.
+    private void showSpinner() {
+        mSpinner = (ProgressBar) findViewById(R.id.spinner);
+        if(mSpinner != null) {
+            mSpinner.setVisibility(View.VISIBLE);
+        }
+    }
+
+    // Hides the spinner.
+    private void hideSpinner() {
+        if(mSpinner != null) {
+            mSpinner.setVisibility(View.GONE);
         }
     }
 }

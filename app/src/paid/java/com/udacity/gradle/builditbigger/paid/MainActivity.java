@@ -49,12 +49,12 @@ public class MainActivity extends ActionBarActivity implements IJokeFetchListene
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Handles the tell joke button click event.
+     */
     public void tellJoke(View view){
         // Show the spinner.
-        mSpinner = (ProgressBar) findViewById(R.id.spinner);
-        if(mSpinner != null) {
-            mSpinner.setVisibility(View.VISIBLE);
-        }
+        showSpinner();
 
         // Start the async fetch of joke from gce server.
         new JokeFetchAsync(this, getString(R.string.backend_project_id)).fetchJoke();
@@ -68,6 +68,19 @@ public class MainActivity extends ActionBarActivity implements IJokeFetchListene
         startActivity(intent);
 
         // Hide the spinner.
+        hideSpinner();
+    }
+
+    // Shows the spinner.
+    private void showSpinner() {
+        mSpinner = (ProgressBar) findViewById(R.id.spinner);
+        if(mSpinner != null) {
+            mSpinner.setVisibility(View.VISIBLE);
+        }
+    }
+
+    // Hides the spinner.
+    private void hideSpinner() {
         if(mSpinner != null) {
             mSpinner.setVisibility(View.GONE);
         }
