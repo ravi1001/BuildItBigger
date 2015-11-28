@@ -14,6 +14,7 @@
         android:id="@+id/instructions_text_view"/>
 
     <Button
+        android:id="@+id/joke_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/instructions_text_view"
@@ -36,6 +37,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone" />
+        android:visibility="invisible" />
 
 </RelativeLayout>
